@@ -2,7 +2,13 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("androidx.navigation.safeargs.kotlin")
-    id("com.apollographql.apollo3").version("3.7.1")
+}
+
+buildscript {
+    dependencies {
+        classpath("com.apollographql.apollo3:apollo-gradle-plugin:3.7.1")
+//        classpath("com.apollographql.apollo3:apollo-gradle-plugin:3.6.2")
+    }
 }
 
 android {
@@ -52,6 +58,11 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime")
 }
 
-apollo {
-    packageName.set("com.example.rocketreserver")
+project.afterEvaluate {
+    pluginManager.apply("com.apollographql.apollo3")
+    extensions.configure(com.apollographql.apollo3.gradle.api.ApolloExtension::class.java) {
+        service("MyService") {
+            packageName.set("com.example.rocketreserver")
+        }
+    }
 }
